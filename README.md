@@ -1,17 +1,20 @@
-# Aadi Chakraborty — Portfolio
+# Aadi Chakraborty · Portfolio
 
-Static portfolio site for Aadi Chakraborty (IB Diploma, The British School, New Delhi, Class of 2027).
+Interactive portfolio for Aadi Chakraborty (IB Diploma, The British School, New Delhi, Class of 2027).
 
-- `index.html` — main interactive site (no build step, no dependencies)
-- `classic.html` — simpler editorial version
-- `assets/aadi.jpg` — headshot
+Vite + React 19 + TypeScript, plain CSS. Same setup as GeneMap.
 
-## Run locally
-Open `index.html` in a browser, or serve the folder:
+## Commands
+- `npm install`
+- `npm run dev`: start the dev server
+- `npm run build`: type-check and build to `dist/`
+- `npm run lint`: run ESLint
 
-```
-python -m http.server 8000
-```
+## Layout
+- `src/data/profile.ts`: all content (research, ventures, activity list, grades, honours, music and sport, skills). Edit text here.
+- `src/data/shell.ts`: output for the interactive terminal.
+- `src/components/`: one file per page area (`Hero`, `Theorem`, `Work`, `Record`, `Shell`, `Footer`, plus `Chrome` for boot screen, cursor and nav).
+- `src/lib/tree.ts`: N-ary tree helpers behind the hero canvas and the theorem visualisation.
+- `src/index.css`: design tokens and all styles.
 
-## Deploy
-Works as-is on GitHub Pages (Settings → Pages → deploy from `main`, root folder).
+Content comes from Aadi's CV and activity list. Where they disagreed, the CV was used.
