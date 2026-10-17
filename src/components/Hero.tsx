@@ -128,18 +128,9 @@ export function Hero() {
   return (
     <header className="hero" id="top">
       <HeroCanvas />
-      {/* The stage takes the space above the name, so the photo can never overlap it. */}
+      {/* Stage: tagline and photo share one band at the top; the name follows directly below. */}
       <div className="hero-stage">
-        <div className="portrait-anchor">
-          <Reveal className="portrait">
-            <img src={portrait} alt="Portrait of Aadi Chakraborty" data-hover />
-            <div className="scan" />
-            <div className="lbl">ID: AADI_C · 2027</div>
-          </Reveal>
-        </div>
-      </div>
-      <div className="wrap">
-        <div className="hero-top">
+        <div className="wrap stage-wrap">
           <p className="hero-tag">
             {PROFILE.tagline.map((t) => (
               <span key={t}>
@@ -151,6 +142,15 @@ export function Hero() {
             IB Diploma · {PROFILE.school} · Intended major: {PROFILE.major}
           </p>
         </div>
+        <div className="portrait-anchor">
+          <Reveal className="portrait">
+            <img src={portrait} alt="Portrait of Aadi Chakraborty" data-hover />
+            <div className="scan" />
+            <div className="lbl">ID: AADI_C · 2027</div>
+          </Reveal>
+        </div>
+      </div>
+      <div className="wrap hero-main">
         <h1 className="name" aria-label={`${first} ${last}`}>
           <span className="row">
             <Split word={first} />
