@@ -22,14 +22,18 @@ function HeroCanvas() {
       ;({ ctx, w, h } = setupCanvas(canvas))
       tree = buildTree(3, 5)
       const narrow = w < 700
-      const cx = w * (narrow ? 0.5 : 0.7)
-      const cy = h * 0.38
+      // Centre the tree on the portrait so the photo sits in the middle of the circle.
+      const anchor = canvas.parentElement?.querySelector('.portrait-anchor')?.getBoundingClientRect()
+      const box = canvas.getBoundingClientRect()
+      const cx = anchor ? anchor.left + anchor.width / 2 - box.left : w * 0.7
+      const cy = anchor ? anchor.top + anchor.height / 2 - box.top : h * 0.38
       const r = (Math.min(w, h) * (narrow ? 0.55 : 0.62)) / tree.depth
       const angle = spreadFromLeaves(tree, (i, n) => (i / n) * Math.PI * 2)
       pos = tree.nodes.map((n, i) => ({ x: cx + Math.cos(angle[i]) * n.depth * r, y: cy + Math.sin(angle[i]) * n.depth * r }))
       heat = new Float32Array(tree.nodes.length)
     }
     layout()
+    document.fonts?.ready.then(layout) // web fonts can shift the portrait on small screens
 
     let resizeTimer = 0
     const onResize = () => {
@@ -107,11 +111,11 @@ function HeroCanvas() {
   return <canvas id="heroCanvas" ref={ref} aria-hidden="true" />
 }
 
-function Split({ word }: { word: string }) {
+function Split({ word, delay = 0 }: { word: string; delay?: number }) {
   return (
     <>
       {word.split('').map((c, i) => (
-        <span className="ch" key={i} style={{ transitionDelay: `${i * 0.045}s` }}>
+        <span className="ch" key={i} style={{ transitionDelay: `${(delay + i) * 0.045}s` }}>
           {c}
         </span>
       ))}
@@ -124,6 +128,16 @@ export function Hero() {
   return (
     <header className="hero" id="top">
       <HeroCanvas />
+      {/* The stage takes the space above the name, so the photo can never overlap it. */}
+      <div className="hero-stage">
+        <div className="portrait-anchor">
+          <Reveal className="portrait">
+            <img src={portrait} alt="Portrait of Aadi Chakraborty" data-hover />
+            <div className="scan" />
+            <div className="lbl">ID: AADI_C · 2027</div>
+          </Reveal>
+        </div>
+      </div>
       <div className="wrap">
         <div className="hero-top">
           <p className="hero-tag">
@@ -136,18 +150,12 @@ export function Hero() {
             <br />
             IB Diploma · {PROFILE.school} · Intended major: {PROFILE.major}
           </p>
-          <Reveal className="portrait">
-            <img src={portrait} alt="Portrait of Aadi Chakraborty" data-hover />
-            <div className="scan" />
-            <div className="lbl">ID: AADI_C · 2027</div>
-          </Reveal>
         </div>
         <h1 className="name" aria-label={`${first} ${last}`}>
           <span className="row">
             <Split word={first} />
-          </span>
-          <span className="row row2">
-            <Split word={last} />
+            <span className="gap" />
+            <Split word={last} delay={first.length + 1} />
           </span>
         </h1>
         <div className="hero-bottom">
